@@ -437,3 +437,127 @@ console.log(movements);
 
 const groupAccounts = Object.groupBy(accounts, ({ pin }) => pin);
 console.log(groupAccounts);
+//////
+
+const x = new Array(7);
+
+const y = Array.from({ length: 10 }, (element, i) => {
+  return Math.floor(Math.random() * 100) + 1;
+});
+
+console.log(y);
+
+labelBalance.addEventListener(`click`, () => {
+  const movementsUi = Array.from(
+    document.querySelectorAll(`.movements__value`),
+    el => Number(el.textContent.replace(`€`, ``))
+  )
+    .map(num => num * 2)
+    .reduce((acc, cur) => acc + cur);
+  console.log(movementsUi);
+});
+
+const newArr = movements.toReversed().toSorted((a, b) => a - b);
+console.log(newArr);
+console.log(movements);
+//1
+const totalDep = accounts
+  .flatMap(acc => acc.movements)
+  .filter(dep => dep > 0)
+  .reduce((acc, cur) => acc + cur, 0);
+console.log(totalDep);
+//2
+const numDeposits1000 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, cur) => (cur >= 1000 ? ++acc : acc), 0);
+
+console.log(numDeposits1000);
+
+//3
+const { deposits, withdrawals } = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (acc, cur) => {
+      cur > 0 ? (acc.deposits += +cur) : (acc.withdrawals += +cur);
+      return acc;
+    },
+    { deposits: 0, withdrawals: 0 }
+  );
+
+console.log(deposits, withdrawals);
+
+//4
+
+const convertTittleCase = function (title) {
+  const exceptions = [`a`, `an`, `the`, `but`, `or`, `on`, `and`, `in`, `with`];
+  const arr = title
+    .toLowerCase()
+    .split(` `)
+    .map(word =>
+      exceptions.includes(word) ? word : word[0].toUpperCase() + word.slice(1)
+    )
+    .join(` `);
+
+  return arr;
+};
+
+console.log(convertTittleCase(`this is a nice day`));
+console.log(convertTittleCase(`My name IS IHORYAN`));
+
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 18, curFood: 244, owners: ['Joe'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John', 'Leo'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] },
+];
+
+//1
+dogs.forEach(dog => {
+  dog.recommendedFood = Math.floor(dog.weight ** 0.75 * 28);
+});
+console.log(dogs);
+//2
+const sarahDog = dogs.find(dog => dog.owners.includes(`Sarah`));
+console.log(
+  `Sarah dog ${
+    sarahDog.curFood > sarahDog.recommendedFood ? `eat to much` : 'eat okay'
+  }`
+);
+//3
+const ownersEatTooMuch = dogs
+  .filter(dog => dog.curFood > dog.recommendedFood)
+  .flatMap(dog => dog.owners);
+const ownersEatTooLittle = dogs
+  .filter(dog => dog.curFood < dog.recommendedFood)
+  .flatMap(dog => dog.owners);
+
+console.log(ownersEatTooMuch, ownersEatTooLittle);
+//4
+
+console.log(`${ownersEatTooMuch.join(` and `)}'s dogs eat to much`);
+console.log(`${ownersEatTooLittle.join(` and `)}'s dogs eat to little`);
+//5
+console.log(dogs.some(dog => dog.curFood === dog.recommendedFood));
+//6
+
+function condition(dog) {
+  return (
+    dog.curFood > dog.recommendedFood * 0.9 &&
+    dog.curFood < dog.recommendedFood * 1.1
+  );
+}
+
+const dogsEatOkayFood = dogs.every(condition);
+console.log(dogsEatOkayFood);
+// current > (recommended * 0.90) && current < (recommended *
+//   1.10)
+//7
+const arrDogsOkayFood = dogs.filter(condition);
+console.log(arrDogsOkayFood);
+//8
+
+const copyDogs = dogs
+  .slice()
+  .toSorted((a, b) => a.recommendedFood - b.recommendedFood);
+console.log(copyDogs);
